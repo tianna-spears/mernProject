@@ -3,16 +3,27 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const path = require('path')
+const { logger } = require('./middleware/logger')
+const errorHandler = require('./middleware/errorHandler.js')
+const cookieParser = require('cookie-parser')
+const cors = require('cors')
+const corsOptions = require('./config/corsOptions.js')
 
 const PORT = process.env.PORT || 5000;
 
 // middleware
-// app.use(express.json())
+app.use(logger)
+app.use(cors(corsOptions))
+app.use(express.json())
+app.use(cookieParser())
 
-// routes
-
-app.use('/', express.static(path.join(__dirname, '/public')))
+app.use('/', express.static('public'))
 app.use('/', require('./routes/root.js'))
+
+app.get('/error', (req, res, next) => {
+    const error = new Error('Test error from /error route')
+    next(error)
+})
 
 app.all('*', (req, res) => {
     res.status(404)
@@ -24,6 +35,10 @@ app.all('*', (req, res) => {
         res.type('txt').send('404 Not Found')
     }
 })
+
+
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`)
