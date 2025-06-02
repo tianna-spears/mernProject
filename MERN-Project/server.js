@@ -22,7 +22,9 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/', express.static('public'))
+
 app.use('/', require('./routes/root.js'))
+app.use('/users', require('./routes/userRoutes'))
 
 // routes
 app.get('/error', (req, res, next) => {
