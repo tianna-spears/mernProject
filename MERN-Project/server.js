@@ -25,6 +25,7 @@ app.use('/', express.static('public'))
 
 app.use('/', require('./routes/root.js'))
 app.use('/users', require('./routes/userRoutes'))
+app.use('/notes', require('./routes/noteRoutes'))
 
 // routes
 app.get('/error', (req, res, next) => {
@@ -55,4 +56,3 @@ mongoose.connection.on('error', err => {
     logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
         'mongoErrLog.log')
 })
-
