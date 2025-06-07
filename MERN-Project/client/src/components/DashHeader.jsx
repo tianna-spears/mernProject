@@ -17,4 +17,4 @@ const DashHeader = () => {
 
     return content
 }
-export default DashHeader
+export default DashHeader;
